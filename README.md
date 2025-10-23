@@ -1,15 +1,17 @@
-# Project Title
+# Online Store
 
 ## Description of the Project
 
-Briefly describe what this Java console application does. Mention its purpose and who the intended users are. Explain the main functionality and what problems it aims to solve.
+Online Store is a Java-based command-line application that simulates a simple shopping experience. 
+It allows users to browse the store’s product catalog, search by product ID, and manage a virtual shopping cart. 
+Users can add products, view their total cost, and check out to complete their purchase.
 
 ## User Stories
 
-List the user stories that guided the development of your application. Format these stories as: "As a [type of user], I want [some goal] so that [some reason]."
-
-- As a user, I want to be able to input my data, so that the application can process it accordingly.
-- As a user, I want to receive immediate feedback, so I can understand what to do next.
+- As a user, I want the store's products to load as I open the application, so that I can immediately browse items for sale.
+- As a user, I want to view all the store's products in one place, so I can easily find products and add them to my cart.
+- As a user, I want to view all the products in my cart, so I can track my total spending and check out my items.
+- As a user, I want to check out all the products in my cart, so that I can purchase my chosen items.
 
 ## Setup
 
@@ -32,37 +34,26 @@ Follow these steps to get your application running within IntelliJ IDEA:
 
 ## Technologies Used
 
-- Java: Mention the version you are using.
-- Any additional libraries or frameworks used in the project.
+- Java: Amazon Corretto 17.0.16
 
 ## Demo
 
-Include screenshots or GIFs that show your application in action. Use tools like [Giphy Capture](https://giphy.com/apps/giphycapture) to record a GIF of your application.
-
-![Application Screenshot](path/to/your/screenshot.png)
+![Application Demo](./workshop-demo.gif)
 
 ## Future Work
 
-Outline potential future enhancements or functionalities you might consider adding:
-
-- Additional feature to be developed.
-- Improvement of current functionalities.
+- Track quantities per product for duplicate products.
+- Remove or modify products in cart.
+- Sort product list display by price or name before viewing.
 
 ## Resources
 
-List resources such as tutorials, articles, or documentation that helped you during the project.
-
-- [Java Programming Tutorial](https://www.example.com)
-- [Effective Java](https://www.example.com)
+- [Capstone 1: Financial Tracker Repository](https://github.com/nati-tewolde/financial-tracker)
 
 ## Team Members
 
-- **Name 1** - Specific contributions or roles.
-- **Name 2** - Specific contributions or roles.
+- **Natnael Tewolde:** Main Contributor
 
 ## Thanks
 
-Express gratitude towards those who provided help, guidance, or resources:
-
-- Thank you to [Mentor's Name] for continuous support and guidance.
-- A special thanks to all teammates for their dedication and teamwork.
+- Once again, thank you to both *potato senseis* for your continuous support and guidance!
