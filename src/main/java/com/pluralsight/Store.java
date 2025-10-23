@@ -102,7 +102,7 @@ public class Store {
         // Prompt user for product sku and validate input
         String sku;
         while (true) {
-            System.out.print("\nEnter product sku to add item to cart: ");
+            System.out.print("\nEnter product sku to add item to cart (X to return): ");
             sku = scanner.nextLine().trim();
             if (sku.isBlank()) {
                 System.out.println("\nProduct id cannot be empty.");
@@ -136,12 +136,6 @@ public class Store {
      * and offers the option to check out.
      */
     public static void displayCart(ArrayList<Product> cart, Scanner scanner) {
-        // TODO:
-        //   • list each product in the cart
-        //   • compute the total cost
-        //   • ask the user whether to check out (C) or return (X)
-        //   • if C, call checkOut(cart, totalAmount, scanner)
-
         if (cart.isEmpty()) {
             System.out.println("\nYour cart is currently empty.");
             return;
@@ -158,31 +152,55 @@ public class Store {
         System.out.printf("%-5s %-40s | %8.2f%n", "Subtotal", " ", totalAmount);
 
         // Prompt user to check out or return
-        String choice = "";
-        while (!choice.equalsIgnoreCase("x")) {
+        while (true) {
             System.out.print("\nEnter C if you'd like to check out, X to return: ");
-            choice = scanner.nextLine().trim();
-            if (!choice.equalsIgnoreCase("c")) {
+            String choice = scanner.nextLine().trim();
+            if (choice.equalsIgnoreCase("x")) {
+                return;
+            } else if (!choice.equalsIgnoreCase("c")) {
                 System.out.println("\nInvalid choice, please enter C or X.");
                 continue;
             }
             checkOut(cart, totalAmount, scanner);
-            // Break?
+            break;
         }
-
     }
 
     /**
-     * Handles the checkout process:
-     * 1. Confirm that the user wants to buy.
-     * 2. Accept payment and calculate change.
-     * 3. Display a simple receipt.
-     * 4. Clear the cart.
+     * Prompts user for payment, calculates change and displays sales receipt
      */
     public static void checkOut(ArrayList<Product> cart,
                                 double totalAmount,
                                 Scanner scanner) {
-        // TODO: implement steps listed above
+        // Prompt user for payment amount and validate input
+        double payment;
+        while (true) {
+            System.out.print("\nEnter payment amount: ");
+            if (!scanner.hasNextDouble()) {
+                System.out.println("\nInvalid amount, please enter a valid payment amount.");
+                scanner.nextLine();
+                continue;
+            }
+            payment = scanner.nextDouble();
+            if (payment < totalAmount) {
+                System.out.println("\nPayment amount cannot be less than order subtotal.");
+                continue;
+            }
+            break;
+        }
+
+        // Calculate change and display sales receipt with change
+        double change = totalAmount - payment;
+        displayProductReceipt("--Sales Receipt--");
+        for (Product product : cart) {
+            printProduct(product);
+        }
+        System.out.println("-".repeat(60));
+        System.out.printf("%-5s %-40s | %8.2f%n", "Subtotal", " ", totalAmount);
+        System.out.printf("%-5s %-42s | %8.2f%n", "Change", " ", Math.abs(change));
+        System.out.println("\nThank you for your purchase!\n");
+
+        cart.clear();
     }
 
     /**
