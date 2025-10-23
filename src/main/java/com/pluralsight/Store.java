@@ -105,7 +105,7 @@ public class Store {
             System.out.print("\nEnter product sku to add item to cart (X to return): ");
             sku = scanner.nextLine().trim();
             if (sku.isBlank()) {
-                System.out.println("\nProduct id cannot be empty.");
+                System.out.println("\nProduct sku cannot be empty.");
                 continue;
             }
             if (sku.equalsIgnoreCase("x")) {
@@ -115,19 +115,13 @@ public class Store {
         }
 
         // Check if sku matches each product and add matching products to cart
-        boolean isFound = false;
-        String productName = "";
-        for (Product product : inventory) {
-            if (product.getSku().equalsIgnoreCase(sku)) {
-                productName = product.getName();
-                cart.add(product);
-                isFound = true;
-            }
-        }
-        if (!isFound) {
-            System.out.println("\nNo products matching sku: " + sku + ".");
+        Product foundProduct = findProductById(sku, inventory);
+
+        if (foundProduct != null) {
+            cart.add(foundProduct);
+            System.out.println("\nSuccessfully added \"" + foundProduct.getName() + "\" to cart!");
         } else {
-            System.out.println("\nSuccessfully added \"" + productName + "\" to cart!");
+            System.out.println("\nNo products matching sku: " + sku + ".");
         }
     }
 
@@ -149,7 +143,7 @@ public class Store {
             totalAmount += product.getPrice();
         }
         System.out.println("-".repeat(60));
-        System.out.printf("%-5s %-40s | %8.2f%n", "Subtotal", " ", totalAmount);
+        System.out.printf("%-5s %-40s | %8s%n", "Subtotal", " ", String.format("$%.2f", totalAmount));
 
         // Prompt user to check out or return
         while (true) {
@@ -196,8 +190,9 @@ public class Store {
             printProduct(product);
         }
         System.out.println("-".repeat(60));
-        System.out.printf("%-5s %-40s | %8.2f%n", "Subtotal", " ", totalAmount);
-        System.out.printf("%-5s %-42s | %8.2f%n", "Change", " ", Math.abs(change));
+        System.out.printf("%-5s %-40s | %8s%n", "Subtotal", " ", String.format("$%.2f", totalAmount));
+        System.out.printf("%-5s %-43s | %8s%n", "Cash", " ", String.format("$%.2f", payment));
+        System.out.printf("%-5s %-42s | %8s%n", "Change", " ", String.format("$%.2f", Math.abs(change)));
         System.out.println("\nThank you for your purchase!\n");
 
         cart.clear();
@@ -205,24 +200,25 @@ public class Store {
 
     /**
      * Searches a list for a product by its id.
-     *
      * @return the matching Product, or null if not found
      */
     public static Product findProductById(String id, ArrayList<Product> inventory) {
-        // TODO: loop over the list and compare ids
-        // METHOD NECESSARY?
+        for (Product product : inventory) {
+            if (product.getSku().equalsIgnoreCase(id)) {
+                return product;
+            }
+        }
         return null;
     }
-
 
     /**
      * Helper method to iterate through and print products in given arraylist
      */
     private static void printProduct(Product product) {
-        System.out.printf("%-5s | %-40s | %8.2f%n",
+        System.out.printf("%-5s | %-40s | %8s%n",
                 product.getSku(),
                 product.getName(),
-                product.getPrice());
+                String.format("$%.2f", product.getPrice()));
     }
 
 
