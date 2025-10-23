@@ -35,8 +35,8 @@ public class Store {
             switch (choice) {
                 case 1 -> displayProducts(inventory, cart, scanner);
                 case 2 -> displayCart(cart, scanner);
-                case 3 -> System.out.println("Thank you for shopping with us!");
-                default -> System.out.println("Invalid choice!");
+                case 3 -> System.out.println("\nThank you for shopping with us!");
+                default -> System.out.println("\nInvalid choice!");
             }
         }
         scanner.close();
@@ -94,18 +94,18 @@ public class Store {
         }
 
         // Display product list
-        displayProductReceipt("--Product List--");
+        displayProductReceipt("--Products--");
         for (Product product : inventory) {
             printProduct(product);
         }
 
-        // Prompts user for product sku and validates input
+        // Prompt user for product sku and validate input
         String sku;
         while (true) {
-            System.out.print("\nEnter product sku to find product: ");
+            System.out.print("\nEnter product sku to add item to cart: ");
             sku = scanner.nextLine().trim();
             if (sku.isBlank()) {
-                System.out.println("\nProduct sku cannot be empty.");
+                System.out.println("\nProduct id cannot be empty.");
                 continue;
             }
             if (sku.equalsIgnoreCase("x")) {
@@ -114,18 +114,21 @@ public class Store {
             break;
         }
 
-        // Checks if sku matches each product and adds matching products to cart
+        // Check if sku matches each product and add matching products to cart
         boolean isFound = false;
+        String productName = "";
         for (Product product : inventory) {
             if (product.getSku().equalsIgnoreCase(sku)) {
+                productName = product.getName();
                 cart.add(product);
                 isFound = true;
             }
         }
         if (!isFound) {
-            System.out.println("No products matching sku: " + sku + ".");
+            System.out.println("\nNo products matching sku: " + sku + ".");
+        } else {
+            System.out.println("\nSuccessfully added \"" + productName + "\" to cart!");
         }
-        System.out.println();
     }
 
     /**
@@ -138,6 +141,34 @@ public class Store {
         //   • compute the total cost
         //   • ask the user whether to check out (C) or return (X)
         //   • if C, call checkOut(cart, totalAmount, scanner)
+
+        if (cart.isEmpty()) {
+            System.out.println("\nYour cart is currently empty.");
+            return;
+        }
+
+        // Compute total amount and display products in cart with subtotal
+        double totalAmount = 0;
+        displayProductReceipt("--Cart--");
+        for (Product product : cart) {
+            printProduct(product);
+            totalAmount += product.getPrice();
+        }
+        System.out.println("-".repeat(60));
+        System.out.printf("%-5s %-40s | %8.2f%n", "Subtotal", " ", totalAmount);
+
+        // Prompt user to check out or return
+        String choice = "";
+        while (!choice.equalsIgnoreCase("x")) {
+            System.out.print("\nEnter C if you'd like to check out, X to return: ");
+            choice = scanner.nextLine().trim();
+            if (!choice.equalsIgnoreCase("c")) {
+                System.out.println("\nInvalid choice, please enter C or X.");
+                continue;
+            }
+            checkOut(cart, totalAmount, scanner);
+            // Break?
+        }
 
     }
 
@@ -161,6 +192,7 @@ public class Store {
      */
     public static Product findProductById(String id, ArrayList<Product> inventory) {
         // TODO: loop over the list and compare ids
+        // METHOD NECESSARY?
         return null;
     }
 
