@@ -1,24 +1,22 @@
 package com.pluralsight;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- * Starter code for the Online Store workshop.
- * Students will complete the TODO sections to make the program work.
- */
 public class Store {
 
     public static void main(String[] args) {
 
-        // Create lists for inventory and the shopping cart
         ArrayList<Product> inventory = new ArrayList<>();
         ArrayList<Product> cart = new ArrayList<>();
 
-        // Load inventory from the data file (pipe-delimited: id|name|price)
         loadInventory("products.csv", inventory);
 
-        // Main menu loop
         Scanner scanner = new Scanner(System.in);
         int choice = -1;
         while (choice != 3) {
@@ -30,11 +28,11 @@ public class Store {
 
             if (!scanner.hasNextInt()) {
                 System.out.println("Please enter 1, 2, or 3.");
-                scanner.nextLine();                 // discard bad input
+                scanner.nextLine();
                 continue;
             }
             choice = scanner.nextInt();
-            scanner.nextLine();                     // clear newline
+            scanner.nextLine();
 
             switch (choice) {
                 case 1 -> displayProducts(inventory, cart, scanner);
@@ -47,27 +45,56 @@ public class Store {
     }
 
     /**
-     * Reads product data from a file and populates the inventory list.
-     * File format (pipe-delimited):
-     * id|name|price
-     * <p>
-     * Example line:
-     * A17|Wireless Mouse|19.99
+     * Reads product data from a file and populates the inventory list
      */
     public static void loadInventory(String fileName, ArrayList<Product> inventory) {
         // TODO: read each line, split on "|",
         //       create a Product object, and add it to the inventory list
+
+        try {
+            // Creates new file object if file isn't found
+            File file = new File(fileName);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            // Reads each line and splits line based on pipe location
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\\|");
+
+                // Validates line content
+                if (parts.length != 5) {
+                    System.out.println("\nError extracting file content, please check " +
+                            fileName + " for corrupted data.");
+                    continue;
+                }
+
+                // Parses necessary fields
+                String sku = parts[0];
+                String name = parts[1];
+                double price = Double.parseDouble(parts[2]);
+                String department = parts[3];
+
+                inventory.add(new Product(sku, name, price, department));
+            }
+            reader.close();
+        } catch (Exception ex) {
+            System.err.println("\nError reading file.");
+        }
+
     }
 
     /**
-     * Displays all products and lets the user add one to the cart.
-     * Typing X returns to the main menu.
+     * Displays all products and lets the user add one to the cart, returns if user enters X
      */
     public static void displayProducts(ArrayList<Product> inventory,
                                        ArrayList<Product> cart,
                                        Scanner scanner) {
         // TODO: show each product (id, name, price),
         //       prompt for an id, find that product, add to cart
+
     }
 
     /**
